@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otus-hw-deployment
+  labels:
+    app: otus-hw
+spec:
+  selector:
+    matchLabels:
+      app: otus-hw
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: otus-hw
+    spec:
+      containers:
+        - name: otus-hw
+          image: idiyatov1992/otus-hw:0.0.1
+          ports:
+            - name: otus-hw
+              containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 5
